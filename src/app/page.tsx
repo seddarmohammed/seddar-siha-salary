@@ -36,7 +36,10 @@ export default function Home() {
             {/* <a href="#" className="hover:text-primary">
               الشروط والأحكام
             </a> */}
-            <a href="#" className="hover:text-primary">
+            <a
+              href="#"
+              className="hover:text-primary max-w-[200px] text-center"
+            >
               خلية الرقمنة المؤسسة العمومية الاستشفائية مغنية - تلمسان -{" "}
             </a>
           </div>
