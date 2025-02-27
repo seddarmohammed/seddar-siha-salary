@@ -30,9 +30,9 @@ export default function Home() {
 
         <footer className="py-6 border-t">
           <div className="container mx-auto flex gap-6 flex-wrap items-center justify-center text-sm">
-            <a href="#" className="hover:text-primary">
+            {/* <a href="#" className="hover:text-primary">
               تواصل معنا
-            </a>
+            </a> */}
             {/* <a href="#" className="hover:text-primary">
               الشروط والأحكام
             </a> */}
