@@ -23,12 +23,10 @@ const contagionLevels = [
 ];
 
 const interessementLevels = [
-  { level: "0", value: 0 },
-  { level: "1", value: 8000 },
-  { level: "2", value: 10000 },
-  { level: "3", value: 12000 },
-  { level: "4", value: 17000 },
-  { level: "5", value: 24000 },
+  { level: "غير مستفيد", value: "0" },
+  { level: "ممارس متخصص مساعد", value: 8000 },
+  { level: "رئيس وحدة", value: 10000 },
+  { level: "رئيس مصلحة", value: 12000 },
 ];
 
 interface ContagionFormProps {
@@ -50,7 +48,7 @@ export function ContagionForm({
   const [selectedLevel, setSelectedLevel] = useState<string>("");
   const [selectedPosteSup, setSelectedPosteSup] = useState<string>("");
   const [selectedInteressement, setSelectedInteressement] =
-    useState<string>("0");
+    useState<string>("");
   const [isLoading, setIsLoading] = useState(false); // Add loading state
 
   const handleSubmit = async () => {
@@ -64,7 +62,10 @@ export function ContagionForm({
       echelon: echelon,
       posteSup: selectedPosteSup,
       contagionLevel: selectedLevel,
-      interessementLevel: selectedInteressement,
+      interessementLevel:
+        interessementLevels
+          .find((l) => l.value === selectedInteressement)
+          ?.value.toString() || "0",
     });
 
     router.push(`/results?${queryParams.toString()}`);
@@ -92,7 +93,7 @@ export function ContagionForm({
             onValueChange={setSelectedPosteSup}
           >
             <SelectTrigger className="text-right h-14 rounded-lg w-full">
-              <SelectValue placeholder="اختر المنصب الإداري" />
+              <SelectValue placeholder="اختر المنصب العالي" />
             </SelectTrigger>
             <SelectContent
               className="max-h-96 w-[var(--radix-select-trigger-width)]"
@@ -172,21 +173,25 @@ export function ContagionForm({
             value={selectedInteressement}
             onValueChange={setSelectedInteressement}
           >
-            <SelectTrigger className="text-right h-14 rounded-lg">
-              <SelectValue placeholder="اختر مستوى منحة المشاركة من 0 إلى 5" />
+            <SelectTrigger className="text-right h-14 rounded-lg w-full">
+              <SelectValue placeholder="اختر مستوى علاوة الانتفاع" />
             </SelectTrigger>
-            <SelectContent className="max-h-96">
+            <SelectContent
+              className="max-h-[35vh] w-[var(--radix-select-trigger-width)]"
+              dir="rtl"
+              align="end"
+            >
               {interessementLevels.map((option) => (
                 <SelectItem
                   key={option.level}
                   value={option.level}
                   className="h-14 hover:bg-gray-100"
                 >
-                  <div className="w-full grid grid-cols-2 items-center py-2 px-4">
-                    <span className="text-base justify-self-start">
-                      المستوى {option.level}
-                    </span>
-                    <span className="text-base justify-self-end text-left">
+                  <div className="w-full flex justify-between items-center pr-2 text-right">
+                    <span className="text-xs">{option.level} </span>
+                  </div>
+                  <div className="w-full grid grid-cols-[auto_1fr] items-center gap-4 pr-2">
+                    <span className="text-sm font-bold text-primary">
                       {option.value.toLocaleString()} دج
                     </span>
                   </div>
@@ -194,6 +199,12 @@ export function ContagionForm({
               ))}
             </SelectContent>
           </Select>
+          {/* Added note here */}
+          <p className="text-xs text-muted-foreground text-right pr-2">
+            ملاحظة: تمنح علاوة الانتفاع للممارسين الطبيين المتخصصين شريطة التخلي
+            عن النشاط التكميلي لمدة دنيا تقدر بخمس 5 سنوات .تدمج في الراتب بعد
+            طلب المعني ودراسة الملف الإداري.
+          </p>
         </div>
       )}
 

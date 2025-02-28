@@ -412,7 +412,7 @@ export function GetStartedForm({ practitioners }: GetStartedFormProps) {
           onValueChange={handleMainCorpChange}
         >
           <SelectTrigger className="text-right h-10 rounded-2xl">
-            <SelectValue placeholder="اختر الفئة الرئيسية" />
+            <SelectValue placeholder="اختر السلك " />
           </SelectTrigger>
           <SelectContent>
             {options.mainCorps.map((option) => (
@@ -432,7 +432,7 @@ export function GetStartedForm({ practitioners }: GetStartedFormProps) {
           disabled={!selectedMainCorp}
         >
           <SelectTrigger className="text-right h-10 rounded-2xl">
-            <SelectValue placeholder="اختر الفئة الفرعية" />
+            <SelectValue placeholder="اختر الفئة" />
           </SelectTrigger>
           <SelectContent>
             {options.subCorps.map((option) => (
@@ -452,7 +452,7 @@ export function GetStartedForm({ practitioners }: GetStartedFormProps) {
           disabled={!selectedSubCorp}
         >
           <SelectTrigger className="text-right h-10 rounded-2xl">
-            <SelectValue placeholder="اختر الدرجة" />
+            <SelectValue placeholder="اختر الرتبة" />
           </SelectTrigger>
           <SelectContent>
             {options.grades.map((option) => (

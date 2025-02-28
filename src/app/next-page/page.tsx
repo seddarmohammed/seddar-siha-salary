@@ -57,7 +57,7 @@ export default async function NextPage({
               الإضافات الوظيفية
             </CardTitle>
             <CardDescription className="text-right">
-              اختر المنصب الإداري ومستوى منحة العدوى
+              المتعلقة بالمنصب المشغول{" "}
             </CardDescription>
           </CardHeader>
           <CardContent>

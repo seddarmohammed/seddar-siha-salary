@@ -14,7 +14,7 @@ const contagionLevels = [
 ];
 
 const interessementLevels = [
-  { level: "0", value: 0 },
+  { level: "غير مستفيد", value: 0 },
   { level: "1", value: 8000 },
   { level: "2", value: 10000 },
   { level: "3", value: 12000 },
@@ -285,7 +285,7 @@ export default async function ResultsPage({
                   <div className="p-4 border rounded-lg bg-white shadow-sm">
                     <div className="grid grid-cols-2 gap-4">
                       <div className="text-right font-medium text-xs text-primary">
-                        المنصب الإداري
+                        المنصب العالي
                       </div>
                       <div className="text-left text-muted-foreground">
                         {posteSupValue.toLocaleString("ar-DZ", {

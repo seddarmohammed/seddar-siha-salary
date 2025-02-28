@@ -38,9 +38,9 @@ export default function Home() {
             </a> */}
             <a
               href="#"
-              className="hover:text-primary max-w-[200px] text-center"
+              className="hover:text-slate-400 max-w-[200px] text-center"
             >
-              خلية الرقمنة المؤسسة العمومية الاستشفائية مغنية - تلمسان -{" "}
+              م ع إ - مغنية تلمسان @ 2025{" "}
             </a>
           </div>
         </footer>
