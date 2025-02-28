@@ -1,7 +1,7 @@
 "use client";
 
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -22,6 +22,14 @@ import {
 import { Header } from "@/components/Header";
 
 export default function ConfirmationPage() {
+  return (
+    <Suspense fallback={<div className="text-center p-8">جاري التحميل...</div>}>
+      <ConfirmationContent />
+    </Suspense>
+  );
+}
+
+function ConfirmationContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
@@ -58,7 +66,7 @@ export default function ConfirmationPage() {
 
   const enfprime = childrenNum * 300;
   const enf10prime = olderChildrenNum * 11.25;
-  const uniquesalary = childrenNum > 0 && spouseWorks ? 800 : 0; // Updated line
+  const uniquesalary = childrenNum > 0 && spouseWorks ? 800 : 0;
 
   // Validate form and update older children if needed
   useEffect(() => {
@@ -100,11 +108,8 @@ export default function ConfirmationPage() {
         <Card className="border-zinc-800/10 shadow-lg">
           <CardHeader className="border-b border-zinc-200 pb-4">
             <CardTitle className="text-3xl font-bold text-right text-zinc-900">
-              المنح العائلية{" "}
+              المنح العائلية
             </CardTitle>
-            {/* <CardDescription className="text-right text-zinc-500 mt-2">
-              المعلومات المدخلة وتأكيد صحتها
-            </CardDescription> */}
           </CardHeader>
 
           <CardContent className="pt-4">
@@ -191,12 +196,12 @@ export default function ConfirmationPage() {
                 <div className="flex flex-row items-center justify-between rounded-lg border p-4">
                   <div className="space-y-0.5">
                     <Label className="text-base text-zinc-800">
-                      منحة الاجر الوحيد{" "}
+                      منحة الاجر الوحيد
                     </Label>
                     <p className="text-sm text-zinc-500">
                       {spouseWorks
                         ? "الزوج/الزوجة لا يعمل حالياً"
-                        : "الزوج/الزوجة  يعمل حالياً"}
+                        : "الزوج/الزوجة يعمل حالياً"}
                     </p>
                     <p className="text-sm text-right text-zinc-500">
                       بدل الزوجة غير العاملة: {uniquesalary.toLocaleString()} دج
