@@ -68,7 +68,7 @@ export function ContagionForm({
           ?.value.toString() || "0",
     });
 
-    router.push(`/confirmation?${queryParams.toString()}`);
+    router.push(`/results?${queryParams.toString()}`);
   };
 
   // Add "No Position" option to postesSuperieurs
@@ -239,10 +239,10 @@ export function ContagionForm({
                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
               ></path>
             </svg>
-            <span>متابعة ... </span>
+            <span>جاري حساب راتبك</span>
           </div>
         ) : (
-          "متابعة "
+          "عرض النتائج"
         )}
       </Button>
     </div>

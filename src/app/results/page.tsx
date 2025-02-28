@@ -52,9 +52,9 @@ function calculateIRG(imposableSalary: number): number {
 }
 
 export default async function ResultsPage({
-  searchParams,
+  searchParams = {}, // Add default empty object
 }: {
-  searchParams: { [key: string]: string };
+  searchParams?: { [key: string]: string }; // Mark as optional
 }) {
   // Extract parameters
   const mainCorp = decodeURIComponent(searchParams.mainCorp || "");
@@ -64,6 +64,17 @@ export default async function ResultsPage({
   const posteSup = searchParams.posteSup || "";
   const contagionLevel = searchParams.contagionLevel || "0";
   const interessementLevel = searchParams.interessementLevel || "0";
+
+  // Extract family allocation parameters
+  const childrenCount = parseInt(searchParams.childrenCount || "0");
+  const olderChildrenCount = parseInt(searchParams.olderChildrenCount || "0");
+  const spouseWorks = searchParams.spouseStatus === "true";
+
+  // Calculate family allocations
+  const enfprime = childrenCount * 300;
+  const enf10prime = olderChildrenCount * 11.25;
+  const uniquesalary = childrenCount > 0 && spouseWorks ? 800 : 0;
+  const totalallocfam = enfprime + enf10prime + uniquesalary;
 
   // Fetch data
   const practitioner = await prisma.healthPractitioner.findFirst({
@@ -153,7 +164,9 @@ export default async function ResultsPage({
   const socialSecurityRetention = Number((brutSalary * 0.09).toFixed(2));
   const imposableSalary = roundToTen(brutSalary - socialSecurityRetention);
   const irgRetention = calculateIRG(imposableSalary);
-  const netSalary = brutSalary - socialSecurityRetention - irgRetention;
+  const totalRetention = socialSecurityRetention + irgRetention;
+  const netSalary =
+    brutSalary - socialSecurityRetention - irgRetention + totalallocfam;
 
   // Calculate prime compensations total
   const totalPrimeCompensations = primeCompensations.reduce((total, code) => {
@@ -226,7 +239,7 @@ export default async function ResultsPage({
                   خطر العدوى{" "}
                 </span>
                 <span className="font-semibold">
-                  {contagionValue.toLocaleString("ar-DZ")} دج
+                  {contagionValue.toLocaleString("ar-DZ")}
                 </span>
               </div>
             </div>
@@ -457,6 +470,80 @@ export default async function ResultsPage({
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       })}
+                    </div>
+                  </div>
+                  <div className="p-4 border-t border-red-100 bg-red-100 grid grid-cols-3 gap-2 items-center">
+                    <div className="text-right space-y-1 col-span-2">
+                      <div className="font-semibold text-sm text-red-800">
+                        إجمال الاقتطاعات{" "}
+                      </div>
+                    </div>
+                    <div className="text-right font-semibold text-lg text-red-800">
+                      {totalRetention.toLocaleString("ar-DZ", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}{" "}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Family Allocations Section */}
+                <div className="bg-blue-50 rounded-xl overflow-hidden shadow-sm mt-4">
+                  <div className="p-4">
+                    <h4 className="text-lg font-semibold text-right text-blue-800">
+                      المنح العائلية
+                    </h4>
+                  </div>
+
+                  <div className="p-4 border-t border-blue-100 grid grid-cols-3 gap-2 items-center">
+                    <div className="text-right space-y-1 col-span-2">
+                      <div className="text-sm text-blue-800">منحة الأبناء</div>
+                    </div>
+                    <div className="text-right text-lg text-blue-800">
+                      {enfprime.toLocaleString("ar-DZ")}
+                    </div>
+                  </div>
+
+                  {olderChildrenCount > 0 && (
+                    <div className="p-4 border-t border-blue-100 grid grid-cols-3 gap-2 items-center">
+                      <div className="text-right space-y-1 col-span-2">
+                        <div className="text-sm text-blue-800">
+                          منحة الأبناء فوق 10 سنوات{" "}
+                        </div>
+                      </div>
+                      <div className="text-right text-lg text-blue-800">
+                        {enf10prime.toLocaleString("ar-DZ", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {uniquesalary > 0 && (
+                    <div className="p-4 border-t border-blue-100 grid grid-cols-3 gap-2 items-center">
+                      <div className="text-right space-y-1 col-span-2">
+                        <div className="text-sm text-blue-800">
+                          الأجر الوحيد{" "}
+                        </div>
+                      </div>
+                      <div className="text-right text-lg text-blue-800">
+                        {uniquesalary.toLocaleString("ar-DZ")}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="p-4 border-t border-blue-100 bg-blue-100 grid grid-cols-3 gap-2 items-center">
+                    <div className="text-right space-y-1 col-span-2">
+                      <div className="font-semibold text-sm text-blue-800">
+                        إجمال المنح العائلية{" "}
+                      </div>
+                    </div>
+                    <div className="text-right font-semibold text-lg text-blue-800">
+                      {totalallocfam.toLocaleString("ar-DZ", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}{" "}
                     </div>
                   </div>
                 </div>
