@@ -15,7 +15,6 @@ import {
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
   CardFooter,
@@ -60,7 +59,6 @@ export default function ConfirmationPage() {
   const enfprime = childrenNum * 300;
   const enf10prime = olderChildrenNum * 11.25;
   const uniquesalary = childrenNum > 0 && spouseWorks ? 800 : 0; // Updated line
-  const totalallocfam = enfprime + enf10prime + uniquesalary;
 
   // Validate form and update older children if needed
   useEffect(() => {
