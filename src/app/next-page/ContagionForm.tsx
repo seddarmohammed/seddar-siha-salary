@@ -62,10 +62,7 @@ export function ContagionForm({
       echelon: echelon,
       posteSup: selectedPosteSup,
       contagionLevel: selectedLevel,
-      interessementLevel:
-        interessementLevels
-          .find((l) => l.value === Number(selectedInteressement)) // Convert to number
-          ?.value.toString() || "0",
+      interessementLevel: selectedInteressement || "0",
     });
 
     router.push(`/confirmation?${queryParams.toString()}`);

@@ -63,8 +63,6 @@ export default async function ResultsPage({
   const echelon = searchParams.echelon || "0";
   const posteSup = searchParams.posteSup || "";
   const contagionLevel = searchParams.contagionLevel || "0";
-  const interessementLevel = searchParams.interessementLevel || "0";
-
   // Extract family allocation parameters
   const childrenCount = parseInt(searchParams.childrenCount || "0");
   const olderChildrenCount = parseInt(searchParams.olderChildrenCount || "0");
@@ -123,9 +121,10 @@ export default async function ResultsPage({
   }
 
   const princSalary = baseSalary + expSalary;
+  const interessementLevel = searchParams.interessementLevel || "0";
   const interessementValue =
     mainCorp === "الممارسين الطبيون المتخصصون"
-      ? interessementLevels.find((l) => l.level === interessementLevel)
+      ? interessementLevels.find((l) => l.value === Number(interessementLevel))
           ?.value || 0
       : 0;
   // Prime compensations (PRIME)
