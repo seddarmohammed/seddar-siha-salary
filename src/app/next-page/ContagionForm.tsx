@@ -64,7 +64,7 @@ export function ContagionForm({
       contagionLevel: selectedLevel,
       interessementLevel:
         interessementLevels
-          .find((l) => l.value === selectedInteressement)
+          .find((l) => l.value === Number(selectedInteressement)) // Convert to number
           ?.value.toString() || "0",
     });
 
