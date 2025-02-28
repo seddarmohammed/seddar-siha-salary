@@ -23,7 +23,7 @@ const contagionLevels = [
 ];
 
 const interessementLevels = [
-  { level: "غير مستفيد", value: "0" },
+  { level: "غير مستفيد", value: 0 },
   { level: "ممارس متخصص مساعد", value: 8000 },
   { level: "رئيس وحدة", value: 10000 },
   { level: "رئيس مصلحة", value: 12000 },
@@ -184,7 +184,7 @@ export function ContagionForm({
               {interessementLevels.map((option) => (
                 <SelectItem
                   key={option.level}
-                  value={option.level}
+                  value={option.value.toString()}
                   className="h-14 hover:bg-gray-100"
                 >
                   <div className="w-full flex justify-between items-center pr-2 text-right">

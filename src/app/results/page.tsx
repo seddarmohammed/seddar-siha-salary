@@ -103,6 +103,7 @@ export default async function ResultsPage({
   // Calculate values
   const contagionValue =
     contagionLevels.find((l) => l.level === contagionLevel)?.value || 0;
+
   const category = practitioner?.category || "غير محدد";
   const indiceCat = salaryScale?.indiceCat || 0;
   const echValue = salaryScale

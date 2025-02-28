@@ -1,3 +1,4 @@
+// src/app/confirmation/page.tsx
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
@@ -45,6 +46,9 @@ function ConfirmationContent() {
     subCorp: getDecodedParam("subCorp"),
     grade: getDecodedParam("grade"),
     echelon: searchParams.get("echelon") || "",
+    posteSup: searchParams.get("posteSup") || "none",
+    contagionLevel: searchParams.get("contagionLevel") || "0",
+    interessementLevel: searchParams.get("interessementLevel") || "0",
     childrenCount: searchParams.get("childrenCount") || "0",
     olderChildrenCount: searchParams.get("olderChildrenCount") || "0",
     spouseStatus: searchParams.get("spouseStatus") || "false",
@@ -83,7 +87,13 @@ function ConfirmationContent() {
   const handleFinalSubmit = () => {
     setIsLoading(true);
     const queryParams = new URLSearchParams({
-      ...initialValues,
+      mainCorp: initialValues.mainCorp,
+      subCorp: initialValues.subCorp,
+      grade: initialValues.grade,
+      echelon: initialValues.echelon,
+      posteSup: initialValues.posteSup,
+      contagionLevel: initialValues.contagionLevel,
+      interessementLevel: initialValues.interessementLevel,
       childrenCount,
       olderChildrenCount,
       spouseStatus: spouseWorks.toString(),
