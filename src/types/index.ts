@@ -1,2 +1,2 @@
 // src/types/index.ts
-export type { HealthPractitioner, SalaryScale, PosteSuperieur } from '@prisma/client'
+export type { HealthPractitioner, SalaryScale, PosteSuperieur, CompensationCode } from '@prisma/client'

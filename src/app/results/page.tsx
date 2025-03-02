@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Header } from "@/components/Header";
 import { CollapsibleSection } from "@/components/CollapsibleSection";
+import { PrintButton } from "@/components/PrintButton";
 
 const contagionLevels = [
   { level: "غير مستفيد", value: 0 },
@@ -52,9 +53,9 @@ function calculateIRG(imposableSalary: number): number {
 }
 
 export default async function ResultsPage({
-  searchParams = {}, // Add default empty object
+  searchParams = {},
 }: {
-  searchParams?: { [key: string]: string }; // Mark as optional
+  searchParams?: { [key: string]: string };
 }) {
   // Extract parameters
   const mainCorp = decodeURIComponent(searchParams.mainCorp || "");
@@ -255,6 +256,10 @@ export default async function ResultsPage({
                 })}
                 <span className="text-xl mr-1">دج</span>
               </div>
+            </div>
+
+            <div className="mt-4 flex justify-center">
+              <PrintButton searchParams={searchParams} />
             </div>
           </CardContent>
         </Card>

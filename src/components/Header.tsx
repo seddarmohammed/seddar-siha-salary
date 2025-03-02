@@ -3,22 +3,31 @@
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { FaTelegramPlane } from "react-icons/fa";
 
 export function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-16 h-8 rounded-3xl bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground text-xl font-normal">
+          <div className="w-16 h-6 rounded-3xl bg-primary flex items-center justify-center">
+            <span className="text-primary-foreground text-m font-normals">
               صدار
             </span>
           </div>
-          <span className="font-bold text-lg">Health-Salary</span>
+          <span className="font-bold text-lg">Siha-Salary</span>
         </Link>
         <nav className="flex gap-6 items-center">
-          <Button variant="outline" size="sm">
-            التواصل
+          <Button variant="outline" size="sm" asChild>
+            <Link
+              href="https://t.me/+hHSke5Ft7hA3NjA0"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-row-reverse items-center gap-2"
+            >
+              <FaTelegramPlane className="h-4 w-4" />
+              <span>انضم لمجموعتنا</span>
+            </Link>
           </Button>
         </nav>
       </div>
