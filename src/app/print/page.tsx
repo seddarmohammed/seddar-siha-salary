@@ -1,9 +1,10 @@
+// src/app/print/page.tsx
 "use client";
 
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import PrintablePayslip from "@/components/PrintablePayslip";
 import { Card, CardContent } from "@/components/ui/card";
+import PrintablePayslip from "@/components/PrintablePayslip";
 import type {
   HealthPractitioner,
   SalaryScale,
@@ -77,12 +78,10 @@ interface PayslipData {
   netPrime: number;
 }
 
-// Helper function to round to nearest 10
 function roundToTen(amount: number): number {
   return Math.floor(amount / 10) * 10;
 }
 
-// Helper function to calculate IRG
 function calculateIRG(imposableSalary: number): number {
   if (imposableSalary <= 30000) return 0;
   if (imposableSalary <= 35000) {
@@ -109,6 +108,38 @@ function calculateIRG(imposableSalary: number): number {
 }
 
 export default function PrintPage() {
+  return (
+    <Suspense fallback={<LoadingComponent />}>
+      <PrintableContent />
+    </Suspense>
+  );
+}
+
+function LoadingComponent() {
+  return (
+    <div className="min-h-screen py-12 px-4 flex items-center justify-center">
+      <Card>
+        <CardContent className="pt-6">
+          <p className="text-center mt-4">جاري تحميل كشف الراتب...</p>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+function ErrorComponent({ message }: { message: string }) {
+  return (
+    <div className="min-h-screen py-12 px-4 flex items-center justify-center">
+      <Card>
+        <CardContent className="pt-6">
+          <p className="text-center text-red-600">{message}</p>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+function PrintableContent() {
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [payslipData, setPayslipData] = useState<PayslipData | null>(null);
@@ -240,7 +271,6 @@ export default function PrintPage() {
               )?.value || 0
             : 0;
 
-        // Prime compensations
         // Prime compensations
         const primeCompensations = compensationCodes
           .filter((code: CompensationCode) => {
@@ -381,27 +411,11 @@ export default function PrintPage() {
   }, [searchParams]);
 
   if (loading) {
-    return (
-      <div className="min-h-screen py-12 px-4 flex items-center justify-center">
-        <Card>
-          <CardContent className="pt-6">
-            <p className="text-center mt-4">جاري تحميل كشف الراتب...</p>
-          </CardContent>
-        </Card>
-      </div>
-    );
+    return <LoadingComponent />;
   }
 
   if (error) {
-    return (
-      <div className="min-h-screen py-12 px-4 flex items-center justify-center">
-        <Card>
-          <CardContent className="pt-6">
-            <p className="text-center text-red-600">{error}</p>
-          </CardContent>
-        </Card>
-      </div>
-    );
+    return <ErrorComponent message={error} />;
   }
 
   return (
