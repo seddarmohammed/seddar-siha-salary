@@ -52,6 +52,24 @@ function calculateIRG(imposableSalary: number): number {
   return (imposableSalary - 320000) * 0.35 + 92200 - 1500;
 }
 
+// Function to calculate special prime percentage based on echelon
+function calculateSpecialPrimePercentage(echelonNum: number): number {
+  if (echelonNum >= 1 && echelonNum <= 2) {
+    return 0.05;
+  } else if (echelonNum >= 3 && echelonNum <= 4) {
+    return 0.1;
+  } else if (echelonNum >= 5 && echelonNum <= 6) {
+    return 0.15;
+  } else if (echelonNum >= 7 && echelonNum <= 8) {
+    return 0.2;
+  } else if (echelonNum >= 9 && echelonNum <= 10) {
+    return 0.25;
+  } else if (echelonNum >= 11 && echelonNum <= 12) {
+    return 0.3;
+  }
+  return 0;
+}
+
 export default async function ResultsPage({
   searchParams = {},
 }: {
@@ -128,6 +146,20 @@ export default async function ResultsPage({
       ? interessementLevels.find((l) => l.value === Number(interessementLevel))
           ?.value || 0
       : 0;
+
+  // Find the special prime compensation code
+  const specialPrimeCode = compensationCodes.find(
+    (code) => code.codeComp === "1-2-26"
+  );
+
+  // Calculate special prime value for "النفسانيون العياديون والأرطوفونيون"
+  let specialPrimeValue = 0;
+  if (mainCorp === "النفسانيون العياديون والأرطوفونيون" && specialPrimeCode) {
+    const echelonNum = parseInt(echelon, 10);
+    const percentage = calculateSpecialPrimePercentage(echelonNum);
+    specialPrimeValue = princSalary * percentage;
+  }
+
   // Prime compensations (PRIME)
   const primeCompensations = compensationCodes.filter((code) => {
     const fieldName = `comp_${code.codeComp.replace(/-/g, "_")}`;
@@ -161,7 +193,8 @@ export default async function ResultsPage({
     posteSupValue +
     totalCompensations +
     contagionValue +
-    interessementValue;
+    interessementValue +
+    specialPrimeValue;
   const socialSecurityRetention = Number((brutSalary * 0.09).toFixed(2));
   const imposableSalary = roundToTen(brutSalary - socialSecurityRetention);
   const irgRetention = calculateIRG(imposableSalary);
@@ -382,6 +415,30 @@ export default async function ResultsPage({
                         </div>
                         <div className="text-right font-medium text-lg text-green-600">
                           {contagionValue.toLocaleString("ar-DZ", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}
+                        </div>
+                      </div>
+                    )}
+                    {/* Special Prime for النفسانيون العياديون والأرطوفونيون */}
+                    {specialPrimeValue > 0 && specialPrimeCode && (
+                      <div className="p-4 border rounded-lg bg-white shadow-sm grid grid-cols-3 gap-2 items-center hover:bg-gray-50 transition-colors">
+                        <div className="text-right space-y-1 col-span-2">
+                          <div className="font-medium text-xs text-primary">
+                            {specialPrimeCode.nameComp || "تعويض خاص"}
+                          </div>
+                          <div className="text-muted-foreground text-sm">
+                            {(
+                              calculateSpecialPrimePercentage(
+                                parseInt(echelon, 10)
+                              ) * 100
+                            ).toFixed(0)}
+                            %
+                          </div>
+                        </div>
+                        <div className="text-right font-medium text-lg text-green-600">
+                          {specialPrimeValue.toLocaleString("ar-DZ", {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
                           })}

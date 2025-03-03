@@ -2,6 +2,7 @@
 import { Cairo } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner"; // Import Toaster
+import { Analytics } from "@vercel/analytics/next";
 
 const cairo = Cairo({
   subsets: ["arabic"],
@@ -18,6 +19,7 @@ export default function RootLayout({
     <html lang="ar" dir="rtl">
       <body className={cairo.className}>
         {children}
+        <Analytics />
         <Toaster
           position="top-center"
           toastOptions={{
