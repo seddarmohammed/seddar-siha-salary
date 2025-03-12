@@ -1,57 +1,55 @@
 // src/app/page.tsx
 import { Header } from "@/components/Header";
 import { HomeClient } from "./HomeClient";
+import { TestimonialsCarousel } from "./TestimonialsCarousel";
+
 export default function Home() {
   return (
-    <>
-      {" "}
-      <Header />{" "}
-      <div className="grid grid-rows-[1fr_auto] min-h-screen">
-        {" "}
-        <main className="flex flex-col items-center justify-center px-4 py-8 md:py-16">
+    <div className="flex flex-col min-h-screen bg-white">
+      <Header />
+
+      {/* Main Content Container */}
+      <div className="flex-1">
+        <div className="max-w-4xl mx-auto px-8 space-y-8 md:space-y-12 pb-8 md:pb-12">
           {" "}
-          <div className="max-w-4xl w-full space-y-4">
+          {/* Space between Header and CTA */}
+          <section className="pt-20 md:pt-12">
             {" "}
-            <div className="text-center space-y-2 md:space-y-3">
-              {" "}
-              <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-                {" "}
-                مرحباً بك{" "}
-              </h1>{" "}
-              <h2 className="text-lg md:text-xl font-semibold text-violet-500">
-                {" "}
-                رمضان كريم{" "}
-              </h2>{" "}
-              <h3 className="text-sm md:text-base font-medium mb-2">
-                {" "}
-                لا تترددوا في زيارة مجموعتنا على تيليجرام{" "}
-              </h3>{" "}
-              <p className="text-xs md:text-sm text-muted-foreground max-w-md mx-auto">
-                {" "}
-                يتم تحديث المنصة بناءً على اقتراحاتكم و تعليقاتكم{" "}
-              </p>{" "}
-            </div>{" "}
-            <div className="flex flex-col gap-4 md:gap-6 items-center max-w-md mx-auto mt-2">
-              {" "}
-              <HomeClient />{" "}
-            </div>{" "}
-          </div>{" "}
-        </main>{" "}
-        <footer className="py-3 md:py-4 border-t">
-          {" "}
-          <div className="container mx-auto flex gap-3 md:gap-4 flex-wrap items-center justify-center text-xs md:text-sm">
-            {" "}
-            {/* <a href="#" className="hover:text-primary">               تواصل معنا             </a> /}             {/ <a href="#" className="hover:text-primary">               الشروط والأحكام             </a> */}{" "}
-            <a
-              href="#"
-              className="hover:text-slate-400 max-w-[200px] text-center"
-            >
-              {" "}
-              م ع إ - مغنية تلمسان @ 2025{" "}
-            </a>{" "}
-          </div>{" "}
-        </footer>{" "}
-      </div>{" "}
-    </>
+            {/* Added top padding */}
+            <div className="bg-gradient-to-t from-gray-200 to-gray-200 rounded-xl shadow-lg p-6 md:p-8">
+              <div className="text-center space-y-6">
+                <h2 className="text-2xl md:text-3xl font-bold text-violet-600">
+                  مرحباً بك
+                </h2>
+                <p className="text-neutral-500 max-w-md mx-auto">
+                  منصة لإدارة وحساب مستحقات مهنيي قطاع الصحة بطريقة سهلة وسريعة
+                  في اسلوب يليق بمقام منتسبي القطاع بعيدا عن صخب وسذاجة الطرح
+                </p>
+                <div className="max-w-xs mx-auto">
+                  <HomeClient />
+                </div>
+              </div>
+            </div>
+          </section>
+          {/* Space between CTA and Testimonials */}
+          <section className="pt-0 md:pt-8">
+            <TestimonialsCarousel />
+          </section>
+        </div>
+      </div>
+
+      {/* Space between Testimonials and Footer */}
+      <footer className="py-2 md:py-2 border-t bg-white">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row gap-6 justify-between items-center">
+            <div className="text-center md:text-right">
+              <p className="text-gray-600 text-sm">
+                م ع إ - مغنية تلمسان @ 2025
+              </p>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 }

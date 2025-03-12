@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Header } from "@/components/Header";
 import { CollapsibleSection } from "@/components/CollapsibleSection";
 import { PrintButton } from "@/components/PrintButton";
+import type { PrintablePayslipProps } from "@/components/PrintablePayslip";
 
 const contagionLevels = [
   { level: "غير مستفيد", value: 0 },
@@ -161,30 +162,58 @@ export default async function ResultsPage({
   }
 
   // Prime compensations (PRIME)
-  const primeCompensations = compensationCodes.filter((code) => {
-    const fieldName = `comp_${code.codeComp.replace(/-/g, "_")}`;
-    return (
-      (practitioner as Record<string, unknown>)?.[fieldName] !== null &&
-      code.description?.includes("PRIME")
-    );
-  });
+  const primeCompensations = compensationCodes
+    .filter((code) => {
+      if (!code.codeComp) return false;
+      const fieldName = `comp_${code.codeComp.replace(/-/g, "_")}`;
+      return (
+        (practitioner as Record<string, unknown>)?.[fieldName] !== null &&
+        code.description?.includes("PRIME")
+      );
+    })
+    .map((code) => {
+      const fieldName = `comp_${code.codeComp.replace(/-/g, "_")}`;
+      const value = (practitioner as Record<string, unknown>)?.[fieldName] || 0;
+      return {
+        codeComp: code.codeComp, // Add this line
+        nameComp: code.nameComp,
+        type: code.type,
+        value: Number(value),
+        compensationValue:
+          code.type === "PERCENTAGE"
+            ? princSalary * Number(value)
+            : Number(value),
+      };
+    });
 
   // Active compensations
-  const activeCompensations = compensationCodes.filter((code) => {
-    const fieldName = `comp_${code.codeComp.replace(/-/g, "_")}`;
-    return (
-      (practitioner as Record<string, unknown>)?.[fieldName] !== null &&
-      !code.description?.includes("PRIME")
-    );
-  });
+  const activeCompensations = compensationCodes
+    .filter((code) => {
+      if (!code.codeComp) return false;
+      const fieldName = `comp_${code.codeComp.replace(/-/g, "_")}`;
+      return (
+        (practitioner as Record<string, unknown>)?.[fieldName] !== null &&
+        !code.description?.includes("PRIME")
+      );
+    })
+    .map((code) => {
+      const fieldName = `comp_${code.codeComp.replace(/-/g, "_")}`;
+      const value = (practitioner as Record<string, unknown>)?.[fieldName] || 0;
+      return {
+        codeComp: code.codeComp, // Add this line
+        nameComp: code.nameComp,
+        type: code.type,
+        value: Number(value),
+        compensationValue:
+          code.type === "PERCENTAGE"
+            ? princSalary * Number(value)
+            : Number(value),
+      };
+    });
 
   // Calculate total compensation value
   const totalCompensations = activeCompensations.reduce((total, code) => {
-    const fieldName = `comp_${code.codeComp.replace(/-/g, "_")}`;
-    const value = (practitioner as Record<string, unknown>)?.[fieldName];
-    const compensationValue =
-      code.type === "PERCENTAGE" ? princSalary * Number(value) : Number(value);
-    return total + compensationValue;
+    return total + code.compensationValue;
   }, 0);
 
   // Calculate salaries
@@ -205,7 +234,7 @@ export default async function ResultsPage({
   // Calculate prime compensations total
   const totalPrimeCompensations = primeCompensations.reduce((total, code) => {
     const fieldName = `comp_${code.codeComp.replace(/-/g, "_")}`;
-    const value = (practitioner as Record<string, unknown>)?.[fieldName];
+    const value = (practitioner as Record<string, unknown>)?.[fieldName] || 0;
     const compensationValue =
       code.type === "PERCENTAGE" ? princSalary * Number(value) : Number(value);
     return total + compensationValue;
@@ -220,6 +249,54 @@ export default async function ResultsPage({
   const irgRetentionPrime = Number((imposablePrime * 0.1).toFixed(2));
   const netPrime =
     threeMonthBrut - socialSecurityRetentionPrime - irgRetentionPrime;
+
+  // After all calculations, prepare the payslip data
+  const payslipData: PrintablePayslipProps = {
+    mainCorp,
+    subCorp,
+    grade,
+    category,
+    echelon,
+    indiceCat,
+    echValue,
+    posteSupTitle: posteSupRecord?.posteSup,
+    contractType: isContractual ? "تعاقدي" : "عقد دائم",
+    contagionLevel,
+    baseSalary,
+    expSalary,
+    princSalary,
+    posteSupValue,
+    contagionValue,
+    interessementValue,
+    activeCompensations: activeCompensations.map((comp) => ({
+      nameComp: comp.nameComp,
+      type: comp.type,
+      value: comp.value,
+      compensationValue: comp.compensationValue,
+    })),
+    brutSalary,
+    socialSecurityRetention,
+    imposableSalary,
+    irgRetention,
+    totalRetention,
+    enfprime,
+    enf10prime,
+    uniquesalary,
+    totalallocfam,
+    netSalary,
+    primeCompensations: primeCompensations.map((comp) => ({
+      nameComp: comp.nameComp,
+      type: comp.type,
+      value: comp.value,
+      compensationValue: comp.compensationValue,
+    })),
+    totalPrimeCompensations,
+    threeMonthBrut,
+    socialSecurityRetentionPrime,
+    imposablePrime,
+    irgRetentionPrime,
+    netPrime,
+  };
 
   return (
     <>
@@ -292,7 +369,7 @@ export default async function ResultsPage({
             </div>
 
             <div className="mt-4 flex justify-center">
-              <PrintButton searchParams={searchParams} />
+              <PrintButton payslipData={payslipData} />
             </div>
           </CardContent>
         </Card>

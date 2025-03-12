@@ -7,7 +7,7 @@ import { FaTelegramPlane, FaFacebook } from "react-icons/fa";
 
 export function Header() {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b">
+    <header className="fixed top-0 w-full bg-white z-50 shadow-sm">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <div className="w-16 h-6 rounded-3xl bg-violet-600 flex items-center justify-center">

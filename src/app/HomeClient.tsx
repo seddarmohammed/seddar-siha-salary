@@ -17,7 +17,7 @@ export function HomeClient() {
   return (
     <Button
       onClick={handleClick}
-      className="bg-violet-600 w-full h-12 text-lg text-neutral-100 rounded-full relative"
+      className="bg-violet-800 w-full h-12 text-lg text-neutral-100 rounded-full relative"
       disabled={loading}
     >
       {loading ? (

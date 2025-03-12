@@ -1,8 +1,9 @@
+// src/components/PrintablePayslip.tsx
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Printer } from "lucide-react";
 
-interface PrintablePayslipProps {
+export interface PrintablePayslipProps {
   // Practitioner and personal info
   mainCorp: string;
   subCorp: string;
@@ -115,8 +116,10 @@ const PrintablePayslip: React.FC<PrintablePayslipProps> = (props) => {
     day: "numeric",
   });
 
-  const formatNumber = (num: number) => {
-    return num.toLocaleString("ar-DZ", {
+  const formatNumber = (num: number | undefined | null) => {
+    // Handle all invalid number cases
+    const safeNum = Number(num) || 0;
+    return safeNum.toLocaleString("ar-DZ", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
@@ -216,7 +219,7 @@ const PrintablePayslip: React.FC<PrintablePayslipProps> = (props) => {
                     {comp.nameComp}
                     <span className="text-[7pt] text-gray-500 mr-1">
                       {comp.type === "PERCENTAGE"
-                        ? `(${(Number(comp.value) * 100).toFixed(0)}%)`
+                        ? `(${(Number(comp.value || 0) * 100).toFixed(0)}%)`
                         : `(${formatNumber(comp.value)} دج)`}
                     </span>
                   </td>
