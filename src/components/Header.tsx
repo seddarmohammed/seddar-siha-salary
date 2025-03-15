@@ -13,7 +13,7 @@ export function Header() {
           <div className="w-16 h-6 rounded-3xl bg-violet-600 flex items-center justify-center">
             <span className="text-neutral-100 text-m font-normals">صدار</span>
           </div>
-          <span className="font-light text-xs">Siha-Salary</span>
+          <span className="font-light text-xs">Siha Salary</span>
         </Link>
         <nav className="flex gap-1 items-center">
           <Button className="bg-blue-400 text-neutral-100" size="sm" asChild>
