@@ -6,7 +6,7 @@ const testimonials = [
   {
     id: 1,
     title: " اخر تحديث ",
-    text: "29 رمضان 1446 الموافق 29 مارس 2025",
+    text: "19 ابريل 2025",
     color: "blue",
   },
   {
